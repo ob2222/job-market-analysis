@@ -1,0 +1,82 @@
+import sqlite3
+import pandas as pd
+
+# создаем соединение
+conn = sqlite3.connect(":memory:")
+
+# расширенные данные
+data = [
+    (1, 'Data Analyst', 'Kyivstar', 'Kyiv', 1500, 'SQL'),
+    (2, 'Data Analyst', 'PrivatBank', 'Dnipro', 1200, 'Excel'),
+    (3, 'BI Analyst', 'Rozetka', 'Kyiv', 1600, 'Power BI'),
+    (4, 'Data Analyst', 'Luxoft', 'Lviv', 1800, 'Python'),
+    (5, 'Marketing Analyst', 'Nova Poshta', 'Kyiv', 1000, 'GA4'),
+    (6, 'BI Analyst', 'SoftServe', 'Lviv', 1400, 'Tableau'),
+    (7, 'Data Analyst', 'GlobalLogic', 'Kharkiv', 1700, 'SQL'),
+    (8, 'Junior Analyst', 'Monobank', 'Kyiv', 800, 'Excel'),
+    (9, 'Data Analyst', 'EPAM', 'Kyiv', 2000, 'Python'),
+    (10, 'BI Analyst', 'Ajax', 'Kyiv', 1300, 'Power BI'),
+    (11, 'Data Analyst', 'Ciklum', 'Odessa', 1500, 'SQL'),
+    (12, 'BI Analyst', 'Infopulse', 'Kharkiv', 1750, 'Power BI'),
+    (13, 'Marketing Analyst', 'Nova Poshta', 'Odessa', 1100, 'GA4'),
+    (14, 'Data Scientist', 'Luxoft', 'Lviv', 2200, 'Python'),
+    (15, 'Junior Analyst', 'Monobank', 'Kyiv', 900, 'Excel'),
+    (16, 'BI Analyst', 'SoftServe', 'Lviv', 1450, 'Tableau'),
+    (17, 'Data Analyst', 'EPAM', 'Dnipro', 1800, 'SQL'),
+    (18, 'Marketing Analyst', 'Rozetka', 'Kyiv', 1300, 'GA4'),
+    (19, 'Data Engineer', 'GlobalLogic', 'Kharkiv', 2000, 'Python'),
+    (20, 'BI Analyst', 'Ciklum', 'Odessa', 1500, 'Power BI')
+]
+
+columns = ["id", "title", "company", "city", "salary_usd", "skill"]
+
+df = pd.DataFrame(data, columns=columns)
+df.to_sql("jobs", conn, index=False, if_exists="replace")
+
+# проверка
+pd.read_sql_query("SELECT * FROM jobs", conn)
+
+
+
+query = """
+SELECT AVG(salary_usd) as avg_salary
+FROM jobs
+"""
+df = pd.read_sql_query(query, conn)
+print(df)
+
+
+
+
+query = """
+SELECT skill, COUNT(*) AS skill_count
+FROM jobs
+GROUP BY skill
+ORDER BY skill_count DESC
+LIMIT 3
+"""
+
+result = pd.read_sql_query(query, conn)
+print(result)
+
+
+
+
+query = """
+SELECT city,COUNT(id) AS work_count
+FROM jobs
+GROUP BY city
+"""
+
+result = pd.read_sql_query(query, conn)
+print(result)
+
+
+
+query = """
+SELECT *
+FROM jobs
+WHERE salary_usd > 1500
+"""
+result = pd.read_sql_query(query, conn)
+print(result)
