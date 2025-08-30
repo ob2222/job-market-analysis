@@ -45,6 +45,9 @@ FROM jobs
 df = pd.read_sql_query(query, conn)
 print(df)
 
+   avg_salary
+0      1490.0
+
 
 
 
@@ -55,10 +58,13 @@ GROUP BY skill
 ORDER BY skill_count DESC
 LIMIT 3
 """
-
 result = pd.read_sql_query(query, conn)
 print(result)
 
+      skill  skill_count
+0       SQL            4
+1    Python            4
+2  Power BI            4
 
 
 
@@ -67,9 +73,16 @@ SELECT city,COUNT(id) AS work_count
 FROM jobs
 GROUP BY city
 """
-
 result = pd.read_sql_query(query, conn)
 print(result)
+
+      city  work_count
+0   Dnipro           2
+1  Kharkiv           3
+2     Kyiv           8
+3     Lviv           4
+4   Odessa           3
+
 
 
 
@@ -80,3 +93,15 @@ WHERE salary_usd > 1500
 """
 result = pd.read_sql_query(query, conn)
 print(result)
+
+   id           title      company     city  salary_usd     skill
+0   3      BI Analyst      Rozetka     Kyiv        1600  Power BI
+1   4    Data Analyst       Luxoft     Lviv        1800    Python
+2   7    Data Analyst  GlobalLogic  Kharkiv        1700       SQL
+3   9    Data Analyst         EPAM     Kyiv        2000    Python
+4  12      BI Analyst    Infopulse  Kharkiv        1750  Power BI
+5  14  Data Scientist       Luxoft     Lviv        2200    Python
+6  17    Data Analyst         EPAM   Dnipro        1800       SQL
+7  19   Data Engineer  GlobalLogic  Kharkiv        2000    Python
+
+
